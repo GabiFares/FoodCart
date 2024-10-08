@@ -27,9 +27,9 @@ create table if not exists usuario (
 
 CREATE TABLE if not exists usuarios_direcciones (
     usuario_id INT,
-    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) REFERENCES usuario(id) on delete cascade,
     direccion_id INT,
-    CONSTRAINT fk_direccion FOREIGN KEY (direccion_id) REFERENCES direccion(id)
+    CONSTRAINT fk_direccion FOREIGN KEY (direccion_id) REFERENCES direccion(id) on delete cascade
 );
 
 -- Alterar tabla usuario para añadir claves foráneas a direccion y telefono
@@ -42,7 +42,8 @@ alter table telefono ADD COLUMN id_usuario integer;
 alter table direccion ADD COLUMN id_usuario integer;
 
 alter table telefono 
-    ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id);
+    ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE;
 
 alter table direccion 
-    ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id);
+    ADD CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE;
+
