@@ -15,15 +15,42 @@
         <img src="assets/carrito.png" alt="Cart" class="h-7 w-7" />
       </a>
       <!-- Perfil del Usuario -->
-      <div class="flex items-center space-x-3">
-        <span class="text-lg text-white dark:text-blue-500 hover:text-blue-400">
-          {{ usuario.nombre }}
-        </span>
-        <img
-          src="assets/user.png"
-          alt="User Photo"
-          class="h-10 w-10 rounded-full border-2 border-gray-300"
-        />
+      <div
+        class="relative"
+        (mouseenter)="openDropdown()"
+        (mouseleave)="closeDropdown()"
+      >
+        <div class="flex items-center space-x-3 cursor-pointer">
+          <span
+            class="text-lg text-white dark:text-blue-500 hover:text-blue-400"
+          >
+            {{ usuario.nombre }}
+          </span>
+          <img
+            src="assets/user.png"
+            alt="User Photo"
+            class="h-10 w-10 rounded-full border-2 border-gray-300"
+          />
+        </div>
+        <div
+          *ngIf="dropdownOpen"
+          class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10"
+        >
+          <a
+            href="#"
+            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+            (click)="viewProfile()"
+          >
+            Ver Perfil
+          </a>
+          <a
+            href="#"
+            class="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md"
+            (click)="logout()"
+          >
+            Cerrar Sesión
+          </a>
+        </div>
       </div>
     </div>
   </div>

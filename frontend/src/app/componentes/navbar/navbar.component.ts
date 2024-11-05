@@ -3,11 +3,12 @@ import { SearchComponent } from '../search/search.component';
 import { FetchService } from '../../servicios/fetch.service';
 import { AuthService } from '../../servicios/auth.service';
 import { Router } from '@angular/router';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [SearchComponent],
+  imports: [SearchComponent, NgIf],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css',
 })
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
   };
 
   @Output() searchValueChange = new EventEmitter<string>();
+  dropdownOpen = false;
 
   constructor(
     private authservice: AuthService,
@@ -40,10 +42,24 @@ export class NavbarComponent implements OnInit {
   logout() {
     this.authservice.Logut();
     localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    this.router.navigate(['auth/login']);
+    this.dropdownOpen = false;
   }
 
   onSearchValue(value: string) {
     this.searchValueChange.emit(value);
+  }
+
+  openDropdown() {
+    this.dropdownOpen = true;
+  }
+
+  closeDropdown() {
+    this.dropdownOpen = false;
+  }
+
+  viewProfile() {
+    this.router.navigate(['/perfil']);
+    this.dropdownOpen = false;
   }
 }
