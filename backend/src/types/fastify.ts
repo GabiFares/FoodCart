@@ -11,6 +11,7 @@ declare module "fastify" {
   interface FastifyInstance {
     authenticate: authenticateFunction;
     verifyAdmin: verifyAdminFunction;
+    mailer: any;
   }
 }
 

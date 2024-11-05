@@ -105,6 +105,14 @@ const usuarioRoute: FastifyPluginAsync = async (
         await client.query(baseQuery, params);
         await client.query("COMMIT");
 
+        let recipient = postUsuario.email;
+
+        fastify.mailer.sendMail({
+          from: process.env.user,
+          to: recipient,
+          subject: "Te has registrado correctamente",
+          html: `<b> Has completado el proceso de registro de usuario correctamente, muchas gracias por utilizar FoodCart! 😊 </b>`,
+        });
         return reply.status(201).send("Se creó correctamente el usuario");
       } catch (error) {
         await client.query("ROLLBACK");

@@ -16,6 +16,8 @@ services:
       - GOOGLE_ID=${GOOGLE_ID}
       - GOOGLE_SECRET=${GOOGLE_SECRET}
       - JWTSECRET=${JWTSECRET}
+      - user=${user}
+      - pass=${pass}
   frontend:
     image: frontend
     container_name: frontend
