@@ -1,18 +1,18 @@
-import { Component, inject, OnInit } from '@angular/core'; // Importa las funciones Component, inject y OnInit de Angular
-import { AuthService } from '../../servicios/auth.service'; // Importa el servicio AuthService
-import { Router } from '@angular/router'; // Importa Router para la navegación de rutas
-import { FormControl, FormsModule } from '@angular/forms'; // Importa FormControl y FormsModule para el manejo de formularios
-import { NgClass, NgIf } from '@angular/common'; // Importa NgClass y NgIf para directivas de Angular
-import { UsuarioRegister } from '../../interfaces/usuario'; // Importa la interfaz UsuarioRegister
+import { Component, inject, OnInit } from '@angular/core';
+import { AuthService } from '../../servicios/auth.service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
+import { UsuarioRegister } from '../../interfaces/usuario';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 @Component({
-  selector: 'app-registro-usuario', // Define el selector del componente, que se utiliza en el HTML
-  standalone: true, // Indica que el componente es autónomo
-  imports: [FormsModule, NgIf, NgClass], // Importa módulos y directivas necesarias
-  templateUrl: './registro-usuario.page.html', // Especifica la ubicación del archivo de plantilla HTML del componente
+  selector: 'app-registro-usuario',
+  standalone: true,
+  imports: [FormsModule, NgIf, NgClass],
+  templateUrl: './registro-usuario.page.html',
 })
 export class RegistroUsuarioPage implements OnInit {
-  // Variables para almacenar los datos del formulario
   nombre: string = '';
   apellido: string = '';
   email: string = '';
@@ -21,16 +21,14 @@ export class RegistroUsuarioPage implements OnInit {
   numero: string = '';
   apto: string = '';
   password: string = '';
-  foto: object = {};
+  foto: string = ''; // Aquí almacenamos la imagen capturada
   confirmarContrasena: string = '';
   contraigual: boolean = false;
   registerUser?: UsuarioRegister;
 
-  // Inyecta los servicios AuthService y Router utilizando la función inject
   private authService: AuthService = inject(AuthService);
   private router: Router = inject(Router);
 
-  // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
     const queryString = window.location.search;
     if (queryString != null) {
@@ -41,7 +39,6 @@ export class RegistroUsuarioPage implements OnInit {
     }
   }
 
-  // Método para manejar el envío del formulario
   async onSubmit() {
     this.registerUser = {
       nombre: this.nombre,
@@ -53,7 +50,7 @@ export class RegistroUsuarioPage implements OnInit {
       apto: this.apto,
       contraseña: this.password,
       repetirContraseña: this.confirmarContrasena,
-      foto: this.foto,
+      foto: this.foto, // Usamos la imagen capturada almacenada en `foto`
     };
     let response = await this.authService.registro(
       JSON.stringify(this.registerUser),
@@ -67,17 +64,55 @@ export class RegistroUsuarioPage implements OnInit {
     }
   }
 
-  // Método para verificar si las contraseñas coinciden
   checkInput() {
-    if (this.confirmarContrasena == this.password) {
-      this.contraigual = true;
-    } else {
-      this.contraigual = false;
-    }
+    this.contraigual = this.confirmarContrasena === this.password;
   }
 
-  // Método para redirigir al usuario a la página de login
   redirectToLogin() {
     this.router.navigate(['auth/login']);
+  }
+
+  async abrirCamara() {
+    try {
+      const image = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: true,
+        resultType: CameraResultType.Base64,
+        source: CameraSource.Camera,
+      });
+
+      if (image && image.base64String) {
+        const imgElement = new Image();
+        imgElement.src = `data:image/jpeg;base64,${image.base64String}`;
+
+        imgElement.onload = () => {
+          // Proceso de recorte usando canvas
+          const canvas = document.getElementById(
+            'recorteCanvas',
+          ) as HTMLCanvasElement;
+          const ctx = canvas.getContext('2d')!;
+          const size = Math.min(imgElement.width, imgElement.height);
+
+          canvas.width = 128;
+          canvas.height = 128;
+
+          ctx.drawImage(
+            imgElement,
+            (imgElement.width - size) / 2,
+            (imgElement.height - size) / 2,
+            size,
+            size,
+            0,
+            0,
+            canvas.width,
+            canvas.height,
+          );
+
+          this.foto = canvas.toDataURL('image/png'); // Guarda el recorte como base64
+        };
+      }
+    } catch (error) {
+      console.error('Error al abrir la cámara:', error);
+    }
   }
 }

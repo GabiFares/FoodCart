@@ -13,7 +13,7 @@ export interface UsuarioRegister extends UsuarioLogin {
   numero: string; // Campo para el número de la calle del usuario
   apto: string; // Campo para el apartamento del usuario
   repetirContraseña: string; // Campo para repetir la contraseña del usuario
-  foto: Object; // Campo para la foto del usuario
+  foto?: string; // Campo para la foto del usuario
 }
 
 // Define la interfaz para el reinicio de contraseña del usuario
