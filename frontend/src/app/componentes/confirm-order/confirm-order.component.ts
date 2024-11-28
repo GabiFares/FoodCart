@@ -10,16 +10,17 @@ import {
 import { AuthService } from '../../servicios/auth.service';
 import { GetDetallePedidosService } from '../../servicios/pedidos/get-detalle-pedidos.service';
 import GetPedidosService from '../../servicios/pedidos/get-pedidos.service';
-import { NgFor, NgIf } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { CRUDdireccionesService } from '../../servicios/direcciones/cruddirecciones.service';
 import { Router } from '@angular/router';
 import { PutPedidoService } from '../../servicios/pedidos/put-pedido.service';
+import { FormsModule, NgModel } from '@angular/forms';
 
 @Component({
   selector: 'confirm-order',
   templateUrl: './confirm-order.component.html',
   standalone: true,
-  imports: [NgIf, NgFor],
+  imports: [NgIf, NgFor, NgClass, FormsModule],
 })
 export class ConfirmOrderComponent implements OnInit {
   authService: AuthService = inject(AuthService);
@@ -27,10 +28,14 @@ export class ConfirmOrderComponent implements OnInit {
   getPedidoService: GetPedidosService = inject(GetPedidosService);
   putPedido: PutPedidoService = inject(PutPedidoService);
   getDireccionesUser: CRUDdireccionesService = inject(CRUDdireccionesService);
+
   router: Router = inject(Router);
   direccionBool: boolean = false;
   id_direccion: string = '';
   @Input() isOpen: boolean = false;
+  @Input() numero: string = '';
+  @Input() calle: string = '';
+  @Input() apto: string = '';
   @Input() pedido: any;
   @Input() importe_total: number = 0;
   @Output() closeModal = new EventEmitter<void>();
@@ -66,7 +71,7 @@ export class ConfirmOrderComponent implements OnInit {
     );
     this.direcciones.set(response.direcciones);
   }
-  constructor() {}
+  constructor() { }
   ngOnInit(): void {
     this.cargarDirecciones();
   }
