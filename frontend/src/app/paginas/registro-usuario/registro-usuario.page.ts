@@ -45,11 +45,6 @@ export class RegistroUsuarioPage implements OnInit {
   }
 
   async onSubmit() {
-    if (!this.foto) {
-      alert('Debe recortar y guardar la foto antes de enviar el formulario.');
-      return;
-    }
-
     const formData = new FormData();
     formData.append('nombre', this.nombre);
     formData.append('apellido', this.apellido);
@@ -58,7 +53,7 @@ export class RegistroUsuarioPage implements OnInit {
     formData.append('calle', this.calle);
     formData.append('numero', this.numero);
     formData.append('apto', this.apto);
-    formData.append('password', this.password);
+    formData.append('contraseña', this.password);
     formData.append('repetirContraseña', this.confirmarContrasena);
 
     if (this.foto) {
@@ -67,7 +62,7 @@ export class RegistroUsuarioPage implements OnInit {
     }
 
     try {
-      await this.fetchMultipartService.post<any>('/usuario', formData);
+      await this.fetchMultipartService.post<any>('usuarios/', formData);
       this.router.navigate(['auth/login']);
     } catch (error) {
       console.error('Error al registrar usuario:', error);
@@ -106,13 +101,10 @@ export class RegistroUsuarioPage implements OnInit {
     console.log('Evento imageCropped recibido:', event);
 
     if (event.base64) {
-      this.croppedImage = event.base64; // Si el base64 existe, úsalo
-      console.log('Imagen recortada (base64):', this.croppedImage);
+      this.croppedImage = event.base64;
     } else if (event.blob) {
-      console.log('Base64 no disponible. Convirtiendo blob manualmente...');
       this.convertBlobToBase64(event.blob).then((base64) => {
         this.croppedImage = base64;
-        console.log('Imagen recortada convertida a base64:', this.croppedImage);
       });
     } else {
       console.error(
