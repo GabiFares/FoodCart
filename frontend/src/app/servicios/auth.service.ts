@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core'; // Importa las funciones inject e Injectable de Angular
 import { FetchService } from './fetch.service'; // Importa el servicio FetchService
+import { FetchMultipartService } from './fetch-multipart.service';
 
 // Decorador Injectable para permitir que este servicio sea inyectable en otros componentes o servicios
 @Injectable({
@@ -22,10 +23,13 @@ export class AuthService {
   }
 
   // Método para registrar un nuevo usuario
-  async registro(body: string): Promise<any> {
+  async registro(formData: FormData): Promise<any> {
     try {
       // Realiza una solicitud POST a la API para el registro
-      const response = await this.apiService.post('usuarios/', body);
+      const response = await this.fetchMultipartService.post(
+        'usuarios/',
+        formData,
+      );
       return response; // Retorna la respuesta de la API
     } catch (error) {
       console.log(error); // Maneja errores en la consola
@@ -100,5 +104,5 @@ export class AuthService {
   }
 
   // Constructor del servicio
-  constructor() { }
+  constructor(private fetchMultipartService: FetchMultipartService) {}
 }

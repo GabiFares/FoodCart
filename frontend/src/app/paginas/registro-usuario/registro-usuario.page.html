@@ -297,23 +297,43 @@
           >Su contraseña debe ser igual.</label
         >
 
-        <!-- Botón para abrir la cámara -->
+        <!-- Botón para la cámara -->
         <button
           type="button"
-          (click)="abrirCamara()"
-          class="bg-blue-500 text-white py-2 px-4 rounded-lg"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          (click)="tomarFoto()"
         >
-          Tomar Foto
+          Agregar Foto
         </button>
 
-        <!-- Canvas oculto para recortar la imagen -->
-        <canvas id="recorteCanvas" style="display: none"></canvas>
+        <!-- Image Cropper -->
+        <div *ngIf="mostrarCropper" class="mt-4">
+          <image-cropper
+            [imageBase64]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1 / 1"
+            [resizeToWidth]="128"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (cropperReady)="onCropperReady()"
+            (loadImageFailed)="onLoadImageFailed($event)"
+          >
+          </image-cropper>
+          <button
+            type="button"
+            (click)="cropImage()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Recortar Imagen
+          </button>
+        </div>
 
-        <!-- Imagen de previsualización circular -->
+        <!-- Mostrar la foto recortada -->
         <img
+          *ngIf="foto"
           [src]="foto"
-          class="rounded-full mt-4"
-          alt="Foto recortada del usuario"
+          alt="Foto del Usuario"
+          class="mt-4 rounded"
         />
 
         <!-- Botón de envío -->
