@@ -1,4 +1,24 @@
-<app-header></app-header>
+<header
+  class="w-full bg-gray-800 text-white p-4 flex justify-between items-center fixed top-0 left-0 z-20"
+>
+  <!-- Botones de navegación -->
+  <p class="text-2xl font-semibold">FoodCart</p>
+
+  <div class="flex space-x-4 ml-auto">
+    <button
+      class="relative px-4 py-2 after:absolute after:left-0 after:bottom-0 after:h-0.5 after:w-0 after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+      (click)="navegarA('comidas')"
+    >
+      Menú
+    </button>
+    <a
+      href="mailto:foodcartsalto@gmail.com"
+      class="text-blue-600 bg-gray-800 hover:bg-gray-600 transition duration-300 ease-in-out py-2 px-4 rounded-full"
+    >
+      Contáctenos
+    </a>
+  </div>
+</header>
 <div class="pt-20 max-h-screen overflow-y-auto">
   <!-- Sección 1: Bienvenida -->
   <section
@@ -157,7 +177,7 @@
             <ul class="list-disc ml-6 text-lg leading-relaxed text-gray-700">
               <li class="mb-2">
                 <p class="text-lg text-left lg:text-left text-gray-700">
-                  Tel: (+598) 1234 5678
+                  Tel: (+598) 92 628 071
                 </p>
               </li>
             </ul>

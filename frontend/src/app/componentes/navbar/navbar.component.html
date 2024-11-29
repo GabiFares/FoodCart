@@ -1,49 +1,93 @@
 <!-- Primera barra de navegación -->
 <nav class="bg-gray-900 border-gray-200 dark:bg-gray-900">
-  <div class="flex flex-wrap justify-between items-center mx-auto max-w-[96%] p-4">
+  <div
+    class="flex flex-wrap justify-between items-center mx-auto max-w-[96%] p-4"
+  >
     <!-- Logotipo y nombre del sitio -->
     <a class="flex items-center space-x-3 rtl:space-x-reverse" routerLink="/">
       <img src="assets/logo.jpeg" class="h-20" alt="FoodCart Logo" />
-      <span class="self-center text-2xl font-semibold whitespace-nowrap text-white dark:text-white">
+      <span
+        class="self-center text-2xl font-semibold whitespace-nowrap text-white dark:text-white"
+      >
         FoodCart
       </span>
     </a>
 
     <div class="flex items-center space-x-6 rtl:space-x-reverse">
       <!-- Carrito de compras -->
-      <a routerLink="/carrito" class="text-lg hover:text-gray-700 flex items-center relative">
+      <a
+        routerLink="/carrito"
+        class="text-lg hover:text-gray-700 flex items-center relative"
+      >
         <img src="assets/carrito.png" alt="Cart" class="h-7 w-7" />
-        <div *ngIf="carritoService.cartCount() > 0"
-          class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+        <div
+          *ngIf="carritoService.cartCount() > 0"
+          class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+        >
           {{ carritoService.cartCount() }}
         </div>
       </a>
 
       <!-- Usuario con Dropdown -->
       <div class="relative">
-        <button (click)="toggleDropdown()" class="flex items-center space-x-3 focus:outline-none">
-          <span class="text-lg text-white dark:text-blue-500 hover:text-blue-400">
+        <button
+          (click)="toggleDropdown()"
+          class="flex items-center space-x-3 focus:outline-none"
+        >
+          <span
+            class="text-lg text-white dark:text-blue-500 hover:text-blue-400"
+          >
             {{ usuario.nombre }}
           </span>
-          <img src="{{usuario.foto}}" alt="User Photo" class="h-10 w-10 rounded-full border-2 border-gray-300" />
+          <img
+            src="{{ usuario.foto }}"
+            alt="User Photo"
+            class="h-10 w-10 rounded-full border-2 border-gray-300"
+          />
         </button>
 
-        <div *ngIf="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-          <a routerLink="/editarPerfil" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-            <img src="assets/edit-profile.png" alt="Edit Profile Icon" class="h-5 w-5 mr-2" />
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50"
+        >
+          <a
+            routerLink="/editarPerfil"
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+          >
+            <img
+              src="assets/edit-profile.png"
+              alt="Edit Profile Icon"
+              class="h-5 w-5 mr-2"
+            />
             Editar Perfil
           </a>
-          <a routerLink="/settings" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-            <img src="assets/settings.png" alt="Settings Icon" class="h-5 w-5 mr-2" />
+          <a
+            routerLink="/settings"
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+          >
+            <img
+              src="assets/settings.png"
+              alt="Settings Icon"
+              class="h-5 w-5 mr-2"
+            />
             Configuración y Privacidad
           </a>
-          <a routerLink="/help" class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
+          <a
+            routerLink="/help"
+            class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+          >
             <img src="assets/help.png" alt="Help Icon" class="h-5 w-5 mr-2" />
             Ayuda y Soporte
           </a>
-          <button (click)="logout()"
-            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
-            <img src="assets/logout.png" alt="Logout Icon" class="h-5 w-5 mr-2" />
+          <button
+            (click)="logout()"
+            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+          >
+            <img
+              src="assets/logout.png"
+              alt="Logout Icon"
+              class="h-5 w-5 mr-2"
+            />
             Cerrar Sesión
           </button>
         </div>
@@ -57,23 +101,38 @@
   <div class="max-w-[95%] px-4 py-3 mx-auto">
     <div class="flex flex-col sm:flex-row items-center justify-between">
       <ul
-        class="flex flex-col sm:flex-row items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-8 rtl:space-x-reverse">
+        class="flex flex-col sm:flex-row items-center w-full sm:w-auto space-y-2 sm:space-y-0 sm:space-x-8 rtl:space-x-reverse"
+      >
         <li>
-          <a routerLink="/comidas"
+          <a
+            routerLink="/comidas"
             class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
-            aria-current="page">
+            aria-current="page"
+          >
             Comidas
           </a>
         </li>
         <li class="w-full sm:w-auto">
-          <a routerLink="/bebidas"
-            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0">
+          <a
+            routerLink="/bebidas"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
             Bebidas
           </a>
         </li>
         <li class="w-full sm:w-auto">
-          <a routerLink="/pedidos/ver"
-            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0">
+          <a
+            routerLink="/acompanamientos"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
+            Acompañamientos
+          </a>
+        </li>
+        <li class="w-full sm:w-auto">
+          <a
+            routerLink="/pedidos/ver"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
             Ver pedidos
           </a>
         </li>
