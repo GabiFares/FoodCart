@@ -4,19 +4,12 @@
 <!-- Contenedor principal que aloja los detalles del producto -->
 <div class="items-center min-h-screen p-4 max-w-sm mx-auto">
   <!-- Imagen predeterminada si el producto no tiene foto -->
-  <img
-    *ngIf="producto.foto==false"
-    src="/assets/logo.jpeg"
-    alt="Product Image"
-    class="w-full h-48 object-cover rounded-md"
-  />
+  <img *ngIf="producto.foto==false" src="/assets/logo.jpeg" alt="Product Image"
+    class="w-full h-48 object-cover rounded-md" />
   <!-- Imagen del producto si está disponible -->
-  <img
-    *ngIf="producto.foto==true"
-    src="https://localhost/backend/Resources/img/productos/{{producto.id_producto}}.jpg"
-    alt="Product Image"
-    class="w-full h-48 object-cover rounded-md"
-  />
+  <img *ngIf="producto.foto==true"
+    src="https://192.168.1.11/backend/Resources/img/productos/{{producto.id_producto}}.jpg" alt="Product Image"
+    class="w-full h-48 object-cover rounded-md" />
 
   <!-- Contenedor para los detalles del producto -->
   <div class="mt-4 space-y-2">

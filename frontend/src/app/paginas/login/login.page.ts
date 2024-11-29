@@ -39,12 +39,12 @@ export class LoginPage {
 
   // Método para redirigir al usuario a la página de inicio de sesión de Google
   redirectToGoogle() {
-    window.location.href = 'https://localhost/backend/auth/login/google';
+    window.location.href = 'https://192.168.1.11/backend/auth/login/google';
   }
 
   // Método para redirigir al usuario a la página de inicio de sesión de Facebook
   redirectToFacebook() {
-    window.location.href = 'https://localhost/backend/auth/login/facebook';
+    window.location.href = 'https://192.168.1.11/backend/auth/login/facebook';
   }
 
   // Método para redirigir al usuario a la página de registro

@@ -40,7 +40,7 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
         this.escucharPosicionRepartidor();
       }
     });
-    this.socket = new WebSocketSubject('wss://localhost/backend/websocket');
+    this.socket = new WebSocketSubject('wss://192.168.1.11/backend/websocket');
   }
   ngOnDestroy(): void {
     this.socket.unsubscribe();

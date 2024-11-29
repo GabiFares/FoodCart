@@ -58,7 +58,7 @@ export class NavbarComponent implements OnInit {
           const usuarioGet = await this.crudUsuarios.getUserById(idToken.id);
           this.usuario.nombre = `${usuarioGet.nombre}`;
           if (usuarioGet.foto == true) {
-            this.usuario.foto = `https://localhost/backend/Resources/${usuarioGet.email}.jpg`;
+            this.usuario.foto = `https://192.168.1.11/backend/Resources/${usuarioGet.email}.jpg`;
           } else {
             this.usuario.foto = 'assets/user.png';
           }
