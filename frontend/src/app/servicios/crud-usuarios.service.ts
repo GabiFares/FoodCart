@@ -1,27 +1,61 @@
-import { inject, Injectable } from '@angular/core'; // Importa las funciones inject e Injectable de Angular
-import { FetchService } from './fetch.service'; // Importa el servicio FetchService
+import { inject, Injectable } from '@angular/core';
+import { FetchService } from './fetch.service';
+import { FetchMultipartService } from './fetch-multipart.service';
+import { PasswordDetails, UserDetails } from '../interfaces/usuario';
 
-// Decorador Injectable para permitir que este servicio sea inyectable en otros componentes o servicios
 @Injectable({
-  providedIn: 'root', // Provee el servicio en el nivel raíz de la aplicación, haciéndolo disponible en todas partes
+  providedIn: 'root',
 })
 export class CRUDUsuariosService {
-  // Inyecta el servicio FetchService utilizando la función inject
-  private apiService: FetchService = inject(FetchService);
+  constructor(
+    private apiService: FetchService,
+    private fetchMultipartService: FetchMultipartService,
+  ) {}
 
   // Método para obtener un usuario por su ID
   async getUserById(id_usuario: string) {
     try {
-      // Realiza una solicitud GET a la API para obtener el usuario por su ID
       const response = await this.apiService.get(
         `usuarios/_id_usuario/${id_usuario}`,
       );
-      return response; // Retorna la respuesta de la API
+      return response;
     } catch (error) {
-      console.log(error); // Maneja errores en la consola
+      console.log(error);
+    }
+  }
+  async updateUserFoto(foto: FormData, userId: string) {
+    try {
+      const response = await this.fetchMultipartService.put(
+        `usuarios/_id_usuario/${userId}/imagen`,
+        foto,
+      );
+      return response;
+    } catch (error) {
+      console.error('Error detallado:', JSON.stringify(error, null, 2));
     }
   }
 
-  // Constructor del servicio
-  constructor() {}
+  async updatePassword(passwordDetails: PasswordDetails, userId: string) {
+    try {
+      const response = await this.apiService.put(
+        `usuarios/_id_usuario/${userId}/password`,
+        JSON.stringify(passwordDetails),
+      );
+      return response;
+    } catch (error) {
+      console.error('Error detallado:', JSON.stringify(error, null, 2));
+    }
+  }
+
+  async updateUserDetails(userDetails: UserDetails, userId: string) {
+    try {
+      const response = await this.apiService.put(
+        `usuarios/_id_usuario/${userId}`,
+        JSON.stringify(userDetails),
+      );
+      return response;
+    } catch (error) {
+      console.error('Error detallado:', JSON.stringify(error, null, 2));
+    }
+  }
 }
