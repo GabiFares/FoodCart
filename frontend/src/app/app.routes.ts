@@ -11,7 +11,6 @@ import { checkAdminGuard } from './guardia/check-admin.guard'; // Importa el gua
 import { VerDetallesPage } from './paginas/ver-detalles/ver-detalles.page'; // Importa la página para ver detalles del producto
 import { EditarProductoPages } from './paginas/editar-producto/editar-producto.pages'; // Importa la página para editar productos
 import { VerPedidosPage } from './paginas/ver-pedidos/ver-pedidos.page'; // Importa la página para ver los pedidos
-import { RestablecerContrasenaPage } from './paginas/reestablecer-contrasena/reestablecer-contrasena.page'; // Importa la página para restablecer la contraseña
 import { VerdetallesPedidosPage } from './paginas/verdetalles-pedidos/verdetalles-pedidos.page'; // Importa la página para ver detalles de los pedidos
 import { PoliticasPrivacidadPage } from './paginas/politicas-privacidad/politicas-privacidad.page'; // Importa la página de políticas de privacidad
 import { TerminosServicioPage } from './paginas/terminos-servicio/terminos-servicio.page'; // Importa la página de términos y condiciones
@@ -84,11 +83,6 @@ export const routes: Routes = [
     component: VerPedidosPage,
     title: 'Ver pedidos', // Título de la página
     canActivate: [checkTokenGuard], // Guard para verificar si el usuario está autenticado
-  },
-  {
-    path: 'restablecer-contrasena', // Ruta para la página de restablecimiento de contraseña
-    component: RestablecerContrasenaPage,
-    title: 'Restablecer Contraseña', // Título de la página
   },
   {
     path: 'pedidos/detalles', // Ruta para la página de detalles de pedidos

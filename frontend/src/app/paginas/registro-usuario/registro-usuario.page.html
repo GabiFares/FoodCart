@@ -173,6 +173,8 @@
           id="numero"
           class="p-2 rounded-xl border w-full text-slate-800"
           placeholder="123"
+
+          pattern="^\d+$"
           required
           maxlength="10"
           [(ngModel)]="numero"
@@ -296,7 +298,6 @@
           class="text-red-500 text-sm"
           >Su contraseña debe ser igual.</label
         >
-
         <!-- Botón para la cámara -->
         <button
           type="button"

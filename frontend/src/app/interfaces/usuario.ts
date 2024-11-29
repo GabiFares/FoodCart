@@ -1,10 +1,8 @@
-// Define la interfaz para el inicio de sesión de usuario
 export interface UsuarioLogin {
-  email: string; // Campo para el correo electrónico del usuario
-  contraseña: string; // Campo para la contraseña del usuario
+  email: string;
+  contraseña: string;
 }
 
-// Define la interfaz para el registro de usuario, extendiendo la interfaz UsuarioLogin
 export interface UsuarioRegister extends UsuarioLogin {
   nombre: string; // Campo para el nombre del usuario
   apellido: string; // Campo para el apellido del usuario
@@ -21,10 +19,29 @@ export interface ResetPassword {
   currentPassword: string; // Campo para la contraseña actual del usuario
   newPassword: string; // Campo para la nueva contraseña del usuario
   confirmPassword: string; // Campo para confirmar la nueva contraseña del usuario
+
 }
 
 export interface FormularioContacto {
   nombre: string;
   email: string;
   mensaje: string;
+}
+
+export interface PasswordDetails {
+  contrasenaActual: string;
+  password: string;
+  confirmarContrasena: string;
+}
+
+export interface UserDetails {
+  nombre: string;
+  apellido: string;
+  calle: string;
+  numero: string;
+  apto?: string;
+  telefono: string;
+  email: string;
+  id_telefono: string;
+  id_direccion: string;
 }
