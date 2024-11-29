@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
             this.usuario.foto = 'assets/user.png';
           }
 
-          const pedidosUsuario = await this.getPedido.getPedidoById(idToken.id);
+          const pedidosUsuario = await this.getPedido.getPedidoByIdUsuario(idToken.id);
 
           if (pedidosUsuario.length > 0) {
             const pedidoPendiente = pedidosUsuario.find(

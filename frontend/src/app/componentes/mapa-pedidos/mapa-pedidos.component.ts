@@ -30,11 +30,13 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
   constructor() {
     // Si hay un cambio en las signal entonces se va a ejecutar el effect.
     effect(() => {
-      this.addAddressMarker();
-      if (this.repartidorBoolean()) {
-        this.addMarkerRepatirdor()
+      if (this.address()) {
+        this.addAddressMarker();
       }
-      else {
+
+      if (this.repartidorBoolean()) {
+        this.addMarkerRepatirdor();
+      } else {
         this.escucharPosicionRepartidor();
       }
     });
@@ -152,7 +154,7 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
           new Style({
             image: new Icon({
               src: 'https://cdn-icons-png.freepik.com/256/5457/5457799.png',
-              scale: 0.05,
+              scale: 0.1,
             }),
           })
         );
@@ -187,7 +189,7 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
             new Style({
               image: new Icon({
                 src: 'https://cdn-icons-png.freepik.com/256/5457/5457799.png',
-                scale: 0.05,
+                scale: 0.1,
               }),
             })
           );

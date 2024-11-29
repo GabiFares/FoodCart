@@ -19,6 +19,7 @@ import { EditarPerfilPage } from './paginas/editar-perfil/editar-perfil.page';
 import { ContactoPage } from './paginas/contacto/contacto.page'; // Importa la página de contacto
 import { acompañamientosPage } from './paginas/acompanamientos/acompanamientos.page';
 
+
 export const routes: Routes = [
   {
     path: 'auth/login', // Ruta para la página de login

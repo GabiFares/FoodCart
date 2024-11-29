@@ -110,7 +110,7 @@ export class VerPedidosPage implements OnInit {
   }
   // Método para cargar los pedidos por ID de usuario
   async cargarPedidosbyID(id_usuario: string) {
-    let pedidossinfiltrar = await this.getPedidos.getPedidoById(id_usuario);
+    let pedidossinfiltrar = await this.getPedidos.getPedidoByIdUsuario(id_usuario);
     pedidossinfiltrar = pedidossinfiltrar.map(
       (pedido: VerPedido, index: number) => {
         return { ...pedido, nombre: 'Pedido ' + (index + 1) };
@@ -154,5 +154,11 @@ export class VerPedidosPage implements OnInit {
     this.router.navigate(['pedidos/detalles/'], {
       queryParams: { id_pedido: id_pedido, id_direccion: id_direccion },
     });
+  }
+
+  Cancelar(pedido: any) {
+    const estado = "CANCELADO"
+    pedido.estado = estado;
+    this.putPedido.put(JSON.stringify(pedido), pedido.id_pedido);
   }
 }

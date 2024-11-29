@@ -11,20 +11,14 @@
       <p class="text-white text-center text-lg mt-40">
         Aún no tienes productos en el carrito 🛒 <br />
         Explora nuestras
-        <a
-          routerLink="/comidas"
-          class="text-blue-400 underline hover:text-blue-700"
-          >comidas</a
-        >.
+        <a routerLink="/comidas" class="text-blue-400 underline hover:text-blue-700">comidas</a>.
       </p>
     </div>
 
     <ng-template #carritoContenido>
       <div class="grid grid-cols-1 gap-4 pb-40">
-        <div
-          class="bg-white p-4 rounded-lg shadow-lg flex items-center justify-between"
-          *ngFor="let producto of productos"
-        >
+        <div class="bg-white p-4 rounded-lg shadow-lg flex items-center justify-between"
+          *ngFor="let producto of productos">
           <div class="flex-1">
             <h2 class="text-lg font-semibold text-gray-900">
               {{ producto.nombre }}
@@ -41,59 +35,35 @@
             <div class="flex items-center gap-2">
               <button
                 class="bg-orange-600 text-white px-3 py-2 rounded-md hover:bg-orange-800 duration-300 flex items-center justify-center"
-                type="button"
-                (click)="editarProducto(producto)"
-              >
+                type="button" (click)="editarProducto(producto)">
                 <img src="assets/edit-icon.png" alt="Icono" class="w-4 h-4" />
               </button>
-              <button
-                (click)="onDetalles(producto.id_producto.toString())"
-                class="bg-green-500 text-white px-3 py-2 rounded-md hover:bg-green-800 transition-all flex items-center justify-center"
-              >
+              <button (click)="onDetalles(producto.id_producto.toString())"
+                class="bg-green-500 text-white px-3 py-2 rounded-md hover:bg-green-800 transition-all flex items-center justify-center">
                 <img src="assets/see-more.png" alt="Detalles" class="w-4 h-4" />
               </button>
-              <button
-                (click)="confirmarEliminacion(producto.id_producto, producto.cantidad)"
-                class="bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-800 transition-all flex items-center justify-center gap-2"
-              >
-                <img
-                  src="assets/delete-icon.png"
-                  alt="Eliminar"
-                  class="w-4 h-4"
-                />
+              <button (click)="confirmarEliminacion(producto.id_producto, producto.cantidad)"
+                class="bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-800 transition-all flex items-center justify-center gap-2">
+                <img src="assets/delete-icon.png" alt="Eliminar" class="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
       </div>
     </ng-template>
-    <add-to-cart
-      [showNote]="true"
-      [product]="productoSeleccionado"
-      [actualizar]="actualizar"
-      [isOpen]="modalIsOpen"
-      (closeModal)="closeModal()"
-    >
+    <add-to-cart [showNote]="true" [product]="productoSeleccionado" [actualizar]="actualizar" [isOpen]="modalIsOpen"
+      (closeModal)="closeModal()">
     </add-to-cart>
 
-    <div
-      *ngIf="productos.length > 0"
-      class="fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800"
-    >
+    <div *ngIf="productos.length > 0" class="fixed bottom-0 left-0 right-0 bg-gray-900 p-4 border-t border-gray-800">
       <div class="max-w-7xl mx-auto flex justify-end items-center gap-4">
         <h2 class="text-xl font-bold text-white">Total: ${{ getTotal() }}</h2>
-        <button
-          class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors"
-          (click)="onConfirmar()"
-        >
+        <button class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors"
+          (click)="onConfirmar()">
           Proceder al Pago
         </button>
-        <confirm-order
-          [isOpen]="modalIsOpendir"
-          [pedido]="this.pedidoaConfirmar"
-          [importe_total]="importe_total"
-          (closeModal)="closeModalDir()"
-        >
+        <confirm-order [isOpen]="modalIsOpendir" [pedido]="this.pedidoaConfirmar" [importe_total]="importe_total"
+          [numero]="numero" [calle]="calle" [apto]="apto" (closeModal)="closeModalDir()">
         </confirm-order>
       </div>
     </div>
