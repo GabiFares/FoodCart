@@ -28,5 +28,15 @@ export class CRUDdireccionesService {
       console.log(error);
     }
   }
+  async postDireccion(body: string) {
+    try {
+      const response = await this.apiService.post(
+        `usuarios/direcciones/`, body
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   constructor() { }
 }

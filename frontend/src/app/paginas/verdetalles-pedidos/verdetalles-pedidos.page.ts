@@ -7,6 +7,8 @@ import { CommonModule, JsonPipe, NgFor } from '@angular/common'; // Importa Comm
 import { MapaPedidosComponent } from '../../componentes/mapa-pedidos/mapa-pedidos.component';
 import { CRUDdireccionesService } from '../../servicios/direcciones/cruddirecciones.service';
 import { AuthService } from '../../servicios/auth.service';
+import { PutPedidoService } from '../../servicios/pedidos/put-pedido.service';
+import GetPedidosService from '../../servicios/pedidos/get-pedidos.service';
 
 @Component({
   selector: 'app-verdetalles-pedidos', // Define el selector del componente, que se utiliza en el HTML
@@ -24,12 +26,15 @@ export class VerdetallesPedidosPage implements OnInit {
     GetDetallePedidosService,
   );
   private getDireccionID: CRUDdireccionesService = inject(CRUDdireccionesService);
+  private getPedidoService: GetPedidosService = inject(GetPedidosService);
+
 
   // Inicializa las propiedades para almacenar los detalles de los pedidos y productos
   detalle_pedidos: any[] = [];
   productos: any[] = [];
   address = signal<string>('');
   repartidor = signal<boolean>(false);
+  putPedido: PutPedidoService = inject(PutPedidoService);
   constructor() { }
 
   // Método para obtener el nombre del producto por su ID
@@ -63,5 +68,13 @@ export class VerdetallesPedidosPage implements OnInit {
       // Navega a la ruta de inicio si no hay un ID de pedido en los parámetros de la ruta
       this.router.navigate(['']);
     }
+  }
+  async entregarPedido() {
+    const pedido = await this.getPedidoService.getPedidoById(this.activatedRoute.snapshot.queryParams['id_pedido']);
+    const estado = "ENTREGADO"
+    pedido.estado = estado;
+    pedido.id_direccion = this.activatedRoute.snapshot.queryParams['id_direccion']
+    this.putPedido.put(JSON.stringify(pedido), pedido.id_pedido);
+    this.router.navigate(['pedidos/ver']);
   }
 }

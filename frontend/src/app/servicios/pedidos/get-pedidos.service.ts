@@ -10,7 +10,7 @@ export class GetPedidosService {
   private apiService: FetchService = inject(FetchService);
 
   // Método para obtener un pedido por ID de usuario
-  async getPedidoById(id_usuario: string) {
+  async getPedidoByIdUsuario(id_usuario: string) {
     try {
       // Realiza una solicitud GET a la API para obtener los pedidos por ID de usuario
       const response = await this.apiService.get(
@@ -35,8 +35,20 @@ export class GetPedidosService {
     }
   }
 
+  async getPedidoById(id_pedido: string) {
+    try {
+      // Realiza una solicitud GET a la API para obtener los pedidos por ID 
+      const response = await this.apiService.get(
+        `pedidos/${id_pedido}`,
+      );
+      return response; // Retorna la respuesta de la API
+    } catch (error) {
+      console.log(error); // Maneja errores en la consola
+      return []; // Retorna un array vacío en caso de error
+    }
+  }
   // Constructor del servicio
-  constructor() {}
+  constructor() { }
 }
 
 export default GetPedidosService;

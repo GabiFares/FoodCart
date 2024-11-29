@@ -173,6 +173,7 @@
           id="numero"
           class="p-2 rounded-xl border w-full text-slate-800"
           placeholder="123"
+
           pattern="^\d+$"
           required
           maxlength="10"
@@ -297,6 +298,44 @@
           class="text-red-500 text-sm"
           >Su contraseña debe ser igual.</label
         >
+        <!-- Botón para la cámara -->
+        <button
+          type="button"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          (click)="tomarFoto()"
+        >
+          Agregar Foto
+        </button>
+
+        <!-- Image Cropper -->
+        <div *ngIf="mostrarCropper" class="mt-4">
+          <image-cropper
+            [imageBase64]="imageChangedEvent"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1 / 1"
+            [resizeToWidth]="128"
+            format="png"
+            (imageCropped)="imageCropped($event)"
+            (cropperReady)="onCropperReady()"
+            (loadImageFailed)="onLoadImageFailed($event)"
+          >
+          </image-cropper>
+          <button
+            type="button"
+            (click)="cropImage()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+          >
+            Recortar Imagen
+          </button>
+        </div>
+
+        <!-- Mostrar la foto recortada -->
+        <img
+          *ngIf="foto"
+          [src]="foto"
+          alt="Foto del Usuario"
+          class="mt-4 rounded"
+        />
 
         <!-- Botón de envío -->
         <button

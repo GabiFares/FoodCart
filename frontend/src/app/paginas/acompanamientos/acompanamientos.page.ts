@@ -13,7 +13,7 @@ import GetPedidosService from '../../servicios/pedidos/get-pedidos.service';
 import { Pedido, PedidoItem } from '../../interfaces/pedido';
 
 @Component({
-  selector: 'bebidas',
+  selector: 'acompañamientos',
   standalone: true,
   imports: [
     NavbarComponent,
@@ -23,10 +23,10 @@ import { Pedido, PedidoItem } from '../../interfaces/pedido';
     AddToCartComponent,
     FooterComponent,
   ],
-  templateUrl: './bebidas.page.html',
+  templateUrl: './acompanamientos.page.html',
 })
-export class BebidasPage implements OnInit {
-  bebidas: Producto[] = [];
+export class acompañamientosPage implements OnInit {
+  acompanamientos: Producto[] = [];
   productosFiltrados: Producto[] = [];
   isAdmin: boolean = false;
   productoSeleccionado: any = null;
@@ -39,7 +39,7 @@ export class BebidasPage implements OnInit {
     private router: Router,
     private deleteProduct: DeleteProductoService,
     private getPedidoService: GetPedidosService,
-  ) { }
+  ) {}
 
   // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
@@ -47,18 +47,18 @@ export class BebidasPage implements OnInit {
     this.isAdmin = this.authService.isAdmin();
   }
 
-  // Método para cargar los productos de bebidas
+  // Método para cargar los productos de acompañamientos
   cargarProductos(): void {
-    this.cargarTabla.getProductosByCategoria('2').then((data) => {
-      this.bebidas = data;
+    this.cargarTabla.getProductosByCategoria('3').then((data) => {
+      this.acompanamientos = data;
       this.productosFiltrados = data;
     });
   }
 
   // Método para actualizar el filtro de productos
   actualizarFiltroDeProductos(searchValue: string) {
-    this.productosFiltrados = this.bebidas.filter((bebida) =>
-      bebida.nombre.toLowerCase().includes(searchValue.toLowerCase()),
+    this.productosFiltrados = this.acompanamientos.filter((acompanamiento) =>
+      acompanamiento.nombre.toLowerCase().includes(searchValue.toLowerCase()),
     );
   }
 
@@ -67,7 +67,7 @@ export class BebidasPage implements OnInit {
     this.productoSeleccionado = producto;
     console.log('este producto en comida page' + JSON.stringify(producto));
     try {
-      const pedidosUsuario = await this.getPedidoService.getPedidoByIdUsuario(
+      const pedidosUsuario = await this.getPedidoService.getPedidoById(
         this.authService.getUserId(),
       );
 

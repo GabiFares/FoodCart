@@ -6,19 +6,39 @@
         &times;
       </button>
     </div>
-    <p class="text-gray-600">Al confirmar su pedido, sera rederigido a "Ver pedidos", para ver el estado de su
-      pedido. </p>
+    <p class="text-gray-600">Coloque una nueva dirección o eliga una de las que ya ingreso.</p>
+    <span class="text-gray-600 text-xs">* Significa que el campo es obligatiorio.</span>
     <div class="mt-4">
       <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-black">
         Dirección:
       </label>
-      <select (change)="onCambiarDireccion($event)" class="text-black">
-        <option value="" selected disabled>Seleccione una dirección:</option>
-        <option *ngFor="let direccion of direcciones()" [value]="direccion.id_direccion">
-          {{direccion.calle}} {{ direccion.numero }} {{direccion.apto}}
-        </option>
-      </select>
-      <button (click)="confirmarPedido()" [disabled]="!direccionBool"
+      <div class="flex">
+        <input id="numero" class="w-1/2 text-black border border-gray-300 p-2 rounded mr-2" placeholder="*Número"
+          minlength="1" maxlength="10" required pattern="^\d+$" [(ngModel)]="numero" #numeroCntrl="ngModel"
+          [disabled]="direccionSeleccionada" (input)="onInputChange()" [ngClass]="{
+            'border-red-500 bg-red-50': numeroCntrl.invalid && numeroCntrl.touched,
+            'border-gray-300': !numeroCntrl.touched,
+            'border-green-500 bg-green-50': numeroCntrl.valid && numeroCntrl.touched
+          }" />
+        <input id="calle" class="w-1/2 text-black border border-gray-300 p-2 rounded mr-2" placeholder="*Calle"
+          minlength="1" maxlength="20" [(ngModel)]="calle" #calleCntrl="ngModel" [disabled]="direccionSeleccionada"
+          (input)="onInputChange()" [ngClass]="{
+            'border-red-500 bg-red-50': calleCntrl.invalid && calleCntrl.touched,
+            'border-gray-300': !calleCntrl.touched,
+            'border-green-500 bg-green-50': calleCntrl.valid && calleCntrl.touched
+          }" />
+        <input id="apto" class="w-1/2 text-black border border-gray-300 p-2 rounded mr-2" placeholder="Apto"
+          maxlength="5" [(ngModel)]="apto" [disabled]="direccionSeleccionada" />
+      </div>
+      <div class="flex mt-5 mb-5">
+        <select (change)="onCambiarDireccion($event)" class="text-black" [disabled]="camposActivos">
+          <option value="" selected disabled>Seleccione una dirección:</option>
+          <option *ngFor="let direccion of direcciones()" [value]="direccion.id_direccion">
+            {{ direccion.calle }} {{ direccion.numero }} {{ direccion.apto }}
+          </option>
+        </select>
+      </div>
+      <button (click)="confirmarPedido()" [disabled]="!direccionSeleccionada && !camposActivos"
         class="w-full bg-blue-700 text-white py-2 mt-4 rounded-full flex items-center justify-between px-4 hover:bg-blue-800 disabled:bg-gray-400 disabled:text-gray-700 disabled:cursor-not-allowed">
         <span class="flex items-center w-full">
           <span class="flex-grow text-center"> Confirmar mi pedido </span>
@@ -26,3 +46,4 @@
       </button>
     </div>
   </div>
+</div>

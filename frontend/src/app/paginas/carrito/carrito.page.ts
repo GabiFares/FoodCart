@@ -41,7 +41,9 @@ export class CarritoPage implements OnInit {
   modalIsOpendir: boolean = false;
   actualizar: boolean = false;
   productoSeleccionado: any = null;
-
+  numero: string = '';
+  calle: string = '';
+  apto: string = '';
   constructor(
     private detallePedidoService: GetDetallePedidosService,
     private getUserService: AuthService,
@@ -50,7 +52,7 @@ export class CarritoPage implements OnInit {
     private carritoService: CarritoService,
     private router: Router,
     private putPedido: PutPedidoService,
-  ) {}
+  ) { }
 
   // Método que se ejecuta al inicializar el componente
   ngOnInit() {
@@ -61,7 +63,7 @@ export class CarritoPage implements OnInit {
   // Método para cargar los productos del carrito
   async cargarProductosDelCarrito() {
     try {
-      const pedidoUsuario = await this.pedidoUsuario.getPedidoById(
+      const pedidoUsuario = await this.pedidoUsuario.getPedidoByIdUsuario(
         this.userId.toString(),
       );
 

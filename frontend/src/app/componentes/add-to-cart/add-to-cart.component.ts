@@ -80,7 +80,7 @@ export class AddToCartComponent {
     };
 
     try {
-      const pedidosUsuario = await this.getPedidoService.getPedidoById(
+      const pedidosUsuario = await this.getPedidoService.getPedidoByIdUsuario(
         this.userId,
       );
 

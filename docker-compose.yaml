@@ -27,7 +27,6 @@ services:
     container_name: frontend # Nombre del contenedor para el frontend
     build:
       context: ./frontend # Directorio de contexto para la construcción del contenedor de frontend
-      target: development
     volumes:
       - ./frontend/:/frontend # Volumen para sincronizar el directorio local del frontend con el contenedor
     command: sh -c "npm install && npm start" # Comando para instalar dependencias y ejecutar el servidor de desarrollo

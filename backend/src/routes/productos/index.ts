@@ -327,7 +327,7 @@ const productosRoute: FastifyPluginAsync = async (
     onRequest: [fastify.authenticate], // Middleware para autenticar
     handler: async function (request, reply) {
       const bodyProducto: productoPostType = request.body as productoPostType;
-      var tieneFoto: boolean = false;
+      let tieneFoto: boolean = false;
 
       if (bodyProducto.foto && Object.keys(bodyProducto.foto).length > 0) {
         tieneFoto = true;
