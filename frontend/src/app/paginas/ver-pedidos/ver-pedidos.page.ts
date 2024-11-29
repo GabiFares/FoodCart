@@ -155,4 +155,10 @@ export class VerPedidosPage implements OnInit {
       queryParams: { id_pedido: id_pedido, id_direccion: id_direccion },
     });
   }
+
+  Cancelar(pedido: any) {
+    const estado = "CANCELADO"
+    pedido.estado = estado;
+    this.putPedido.put(JSON.stringify(pedido), pedido.id_pedido);
+  }
 }

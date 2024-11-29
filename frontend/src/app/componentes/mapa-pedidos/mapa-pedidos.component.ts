@@ -30,11 +30,13 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
   constructor() {
     // Si hay un cambio en las signal entonces se va a ejecutar el effect.
     effect(() => {
-      this.addAddressMarker();
-      if (this.repartidorBoolean()) {
-        this.addMarkerRepatirdor()
+      if (this.address()) {
+        this.addAddressMarker();
       }
-      else {
+
+      if (this.repartidorBoolean()) {
+        this.addMarkerRepatirdor();
+      } else {
         this.escucharPosicionRepartidor();
       }
     });
