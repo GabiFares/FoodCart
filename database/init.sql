@@ -134,7 +134,16 @@ VALUES
 ('Hamburguesa Doble', 'Hamburguesa doble carne con queso y bacon', 400, 1, true),
 ('Hamburguesa Vegetariana', 'Hamburguesa con hamburguesa de lentejas y verduras frescas', 450, 1, true),
 ('Coca-cola', 'Coca de 500ml', 70, 2, true),
-('Agua Mineral', 'Botella de agua mineral de 500ml', 50, 2, true);
+('Agua Mineral', 'Botella de agua mineral de 500ml', 50, 2, true),
+('Jugo de Naranja', 'Jugo de naranja CAPUTTO 500 cc', 55, 2, true),
+('Pepsi', 'Refresco Pepsi Original 500ml', 70, 2, true),
+('Fanta', 'Refresco Fanta Naranja 500ml', 70, 2, true),
+('Paso de los Toros', 'Refresco Paso de los Toros Pomelo 500ml', 65, 2, true),
+('Monster Energy Original', 'Energizante Monster Original Green 473 ML', 100, 2, true),
+('Monster Energy Ultra', 'Energizante Monster Ultra Lata 473 ml', 105, 2, true),
+('Papas Fritas', 'Porción de papas fritas', 120, 3, true),
+('Aros de Cebolla', 'Porción de aros de cebolla', 120, 3, true),
+('Nuggets de Pollo', 'Porción de nuggets de pollo', 115, 3, true);
 
 -- Insertar datos adicionales en las tablas telefono y direccion
 INSERT INTO telefono (numeroTel) VALUES('098777234');

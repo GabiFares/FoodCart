@@ -24,7 +24,7 @@ const usuarioRoute: FastifyPluginAsync = async (
     },
     handler: async function (request, reply) {
       const postUsuario = request.body as UsuarioPostSchema;
-
+      let tieneFoto: boolean = false;
       // Verifica si las contraseñas coinciden
       if (postUsuario.contraseña != postUsuario.repetirContraseña) {
         return reply
@@ -35,6 +35,7 @@ const usuarioRoute: FastifyPluginAsync = async (
       // Guarda la foto de usuario si existe
       if (postUsuario.foto && Object.keys(postUsuario.foto).length > 0) {
         try {
+          tieneFoto = true;
           const fileBuffer = postUsuario.foto as Buffer;
           const fileName = join(
             process.cwd(),
@@ -57,61 +58,57 @@ const usuarioRoute: FastifyPluginAsync = async (
 
         // Inserta la nueva dirección y teléfono, y crea el usuario
         const baseQuery = `
-          WITH direccionid AS (
-            INSERT INTO direccion (numero, calle${
-              postUsuario.apto ? ", apto" : ""
-            }) 
-            VALUES ($1, $2${postUsuario.apto ? ", $3" : ""}) 
-            RETURNING id
-          ),
-          telefonoid AS (
-            INSERT INTO telefono (numeroTel) 
-            VALUES ($${postUsuario.apto ? "8" : "7"}) 
-            RETURNING id
-          ),
-          usuarioid AS (
-            INSERT INTO usuario(nombre, apellido, email, contraseña, id_direccion, id_telefono) 
-            VALUES ($${postUsuario.apto ? "4" : "3"}, $${
-          postUsuario.apto ? "5" : "4"
-        }, 
-                    $${postUsuario.apto ? "6" : "5"}, crypt($${
-          postUsuario.apto ? "7" : "6"
-        }, gen_salt('bf')), 
-                    (SELECT id FROM direccionid), (SELECT id FROM telefonoid)) 
-            RETURNING id
-          ),
-          usuario_direccion AS (
-            INSERT INTO usuarios_direcciones(id_usuario, id_direccion) 
-            VALUES ((SELECT id FROM usuarioid), (SELECT id FROM direccionid))
-            RETURNING (SELECT id FROM usuarioid) as user_id
-          )
-          SELECT user_id FROM usuario_direccion`;
+        WITH direccionid AS (
+          INSERT INTO direccion (numero, calle${postUsuario.apto ? ", apto" : ""}) 
+          VALUES ($1, $2${postUsuario.apto ? ", $3" : ""}) 
+          RETURNING id
+        ),
+        telefonoid AS (
+          INSERT INTO telefono (numeroTel) 
+          VALUES ($${postUsuario.apto ? "9" : "8"}) 
+          RETURNING id
+        ),
+        usuarioid AS (
+          INSERT INTO usuario(nombre, apellido, email, contraseña, id_direccion, id_telefono, foto) 
+          VALUES ($${postUsuario.apto ? "4" : "3"}, $${postUsuario.apto ? "5" : "4"}, 
+                  $${postUsuario.apto ? "6" : "5"}, crypt($${postUsuario.apto ? "7" : "6"}, gen_salt('bf')), 
+                  (SELECT id FROM direccionid), (SELECT id FROM telefonoid), $${postUsuario.apto ? "8" : "7"})
+          RETURNING id
+        ),
+        usuario_direccion AS (
+          INSERT INTO usuarios_direcciones(id_usuario, id_direccion) 
+          VALUES ((SELECT id FROM usuarioid), (SELECT id FROM direccionid))
+          RETURNING (SELECT id FROM usuarioid) as user_id
+        )
+        SELECT user_id FROM usuario_direccion`;
 
         const params = postUsuario.apto
           ? [
-              postUsuario.numero,
-              postUsuario.calle,
-              postUsuario.apto,
-              postUsuario.nombre,
-              postUsuario.apellido,
-              postUsuario.email,
-              postUsuario.contraseña,
-              postUsuario.telefono,
-            ]
+            postUsuario.numero,
+            postUsuario.calle,
+            postUsuario.apto,
+            postUsuario.nombre,
+            postUsuario.apellido,
+            postUsuario.email,
+            postUsuario.contraseña,
+            tieneFoto,
+            postUsuario.telefono,
+          ]
           : [
-              postUsuario.numero,
-              postUsuario.calle,
-              postUsuario.nombre,
-              postUsuario.apellido,
-              postUsuario.email,
-              postUsuario.contraseña,
-              postUsuario.telefono,
-            ];
+            postUsuario.numero,
+            postUsuario.calle,
+            postUsuario.nombre,
+            postUsuario.apellido,
+            postUsuario.email,
+            postUsuario.contraseña,
+            tieneFoto,
+            postUsuario.telefono,
+          ];
 
         await client.query(baseQuery, params);
         await client.query("COMMIT");
 
-        var recipient = postUsuario.email;
+        let recipient = postUsuario.email;
 
         // Envía un correo de confirmación al usuario
         fastify.mailer.sendMail({

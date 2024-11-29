@@ -40,7 +40,7 @@
             {{ usuario.nombre }}
           </span>
           <img
-            src="assets/user.png"
+            src="{{ usuario.foto }}"
             alt="User Photo"
             class="h-10 w-10 rounded-full border-2 border-gray-300"
           />
@@ -118,6 +118,14 @@
             class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
           >
             Bebidas
+          </a>
+        </li>
+        <li class="w-full sm:w-auto">
+          <a
+            routerLink="/acompanamientos"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
+            Acompañamientos
           </a>
         </li>
         <li class="w-full sm:w-auto">

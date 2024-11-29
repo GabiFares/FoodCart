@@ -1,23 +1,20 @@
 import { Injectable } from '@angular/core';
 
-// Decorador Injectable para permitir que este servicio sea inyectable en otros componentes o servicios
 @Injectable({
-  providedIn: 'root', // Provee el servicio en el nivel raíz de la aplicación, haciéndolo disponible en todas partes
+  providedIn: 'root',
 })
 export class FetchMultipartService {
-  readonly baseurl = 'https://localhost/backend/'; // URL base para todas las solicitudes al backend
+  readonly baseurl = 'https://localhost/backend/';
 
-  // Función privada para obtener los encabezados de las solicitudes HTTP
   private getHeaders(): HeadersInit {
     if (localStorage.getItem('token')) {
       return {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Agrega el token de autorización si existe en el almacenamiento local
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
       };
     }
-    return { Authorization: '' }; // Retorna un encabezado vacío si no existe un token
+    return { Authorization: '' };
   }
 
-  // Método POST para enviar datos multipart/form-data al backend
   async post<T = any>(url: string, body: FormData): Promise<T> {
     console.log(body);
     try {
@@ -45,7 +42,6 @@ export class FetchMultipartService {
     }
   }
 
-  // Método PUT para actualizar datos multipart/form-data en el backend
   async put<T = any>(url: string, body: FormData): Promise<T> {
     console.log(body);
     try {
@@ -73,7 +69,6 @@ export class FetchMultipartService {
     }
   }
 
-  // Método GET para obtener datos del backend
   async get<T = any>(url: string): Promise<T> {
     try {
       const response = await fetch(`${this.baseurl}${url}`, {
@@ -99,7 +94,6 @@ export class FetchMultipartService {
     }
   }
 
-  // Método DELETE para eliminar datos del backend
   async delete<T = any>(url: string): Promise<T> {
     try {
       const response = await fetch(`${this.baseurl}${url}`, {
@@ -125,5 +119,5 @@ export class FetchMultipartService {
     }
   }
 
-  constructor() { } // Constructor vacío, puede ser utilizado para inicializar el servicio si es necesario
+  constructor() {}
 }
