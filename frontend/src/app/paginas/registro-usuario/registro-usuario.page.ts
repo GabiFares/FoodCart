@@ -1,18 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core'; // Importa las funciones Component, inject y OnInit de Angular
-import { AuthService } from '../../servicios/auth.service'; // Importa el servicio AuthService
-import { Router } from '@angular/router'; // Importa Router para la navegación de rutas
-import { FormControl, FormsModule } from '@angular/forms'; // Importa FormControl y FormsModule para el manejo de formularios
-import { NgClass, NgIf } from '@angular/common'; // Importa NgClass y NgIf para directivas de Angular
-import { UsuarioRegister } from '../../interfaces/usuario'; // Importa la interfaz UsuarioRegister
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgClass, NgIf } from '@angular/common';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { ImageCroppedEvent, ImageCropperComponent } from 'ngx-image-cropper';
+import { SafeUrl } from '@angular/platform-browser';
+import { FetchMultipartService } from '../../servicios/fetch-multipart.service';
 
 @Component({
-  selector: 'app-registro-usuario', // Define el selector del componente, que se utiliza en el HTML
-  standalone: true, // Indica que el componente es autónomo
-  imports: [FormsModule, NgIf, NgClass], // Importa módulos y directivas necesarias
-  templateUrl: './registro-usuario.page.html', // Especifica la ubicación del archivo de plantilla HTML del componente
+  selector: 'app-registro-usuario',
+  standalone: true,
+  imports: [FormsModule, NgIf, NgClass, ImageCropperComponent],
+  templateUrl: './registro-usuario.page.html',
 })
 export class RegistroUsuarioPage implements OnInit {
-  // Variables para almacenar los datos del formulario
   nombre: string = '';
   apellido: string = '';
   email: string = '';
@@ -21,16 +22,18 @@ export class RegistroUsuarioPage implements OnInit {
   numero: string = '';
   apto: string = '';
   password: string = '';
-  foto: object = {};
+  foto: string = ''; // Aquí almacenamos la imagen recortada como base64
   confirmarContrasena: string = '';
   contraigual: boolean = false;
-  registerUser?: UsuarioRegister;
+  imageChangedEvent: any = '';
+  croppedImage: SafeUrl = '';
+  mostrarCropper: boolean = false;
 
-  // Inyecta los servicios AuthService y Router utilizando la función inject
-  private authService: AuthService = inject(AuthService);
+  private fetchMultipartService: FetchMultipartService = inject(
+    FetchMultipartService,
+  );
   private router: Router = inject(Router);
 
-  // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
     const queryString = window.location.search;
     if (queryString != null) {
@@ -41,43 +44,112 @@ export class RegistroUsuarioPage implements OnInit {
     }
   }
 
-  // Método para manejar el envío del formulario
   async onSubmit() {
-    this.registerUser = {
-      nombre: this.nombre,
-      apellido: this.apellido,
-      email: this.email,
-      telefono: this.telefono,
-      calle: this.calle,
-      numero: this.numero,
-      apto: this.apto,
-      contraseña: this.password,
-      repetirContraseña: this.confirmarContrasena,
-      foto: this.foto,
-    };
-    let response = await this.authService.registro(
-      JSON.stringify(this.registerUser),
-    );
-    if (response != null) {
+    const formData = new FormData();
+    formData.append('nombre', this.nombre);
+    formData.append('apellido', this.apellido);
+    formData.append('email', this.email);
+    formData.append('telefono', this.telefono);
+    formData.append('calle', this.calle);
+    formData.append('numero', this.numero);
+    formData.append('apto', this.apto);
+    formData.append('contraseña', this.password);
+    formData.append('repetirContraseña', this.confirmarContrasena);
+
+    if (this.foto) {
+      const blob = this.dataURItoBlob(this.foto);
+      formData.append('foto', blob, 'foto_usuario.png');
+    }
+
+    try {
+      await this.fetchMultipartService.post<any>('usuarios/', formData);
       this.router.navigate(['auth/login']);
-    } else {
+    } catch (error) {
+      console.error('Error al registrar usuario:', error);
       alert(
         'Hubo un error al intentar registrarlo, por favor pruebe con otros datos.',
       );
     }
   }
 
-  // Método para verificar si las contraseñas coinciden
   checkInput() {
-    if (this.confirmarContrasena == this.password) {
-      this.contraigual = true;
+    this.contraigual = this.confirmarContrasena === this.password;
+  }
+
+  redirectToLogin() {
+    this.router.navigate(['auth/login']);
+  }
+
+  public async tomarFoto() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.DataUrl,
+    });
+
+    // Validar formato base64
+    if (image.dataUrl?.startsWith('data:image')) {
+      console.log('Foto capturada:', image.dataUrl);
+      this.imageChangedEvent = image.dataUrl; // Asignar al cropper
+      this.mostrarCropper = true;
     } else {
-      this.contraigual = false;
+      console.error('Error: Formato de imagen no válido.');
     }
   }
 
-  // Método para redirigir al usuario a la página de login
-  redirectToLogin() {
-    this.router.navigate(['auth/login']);
+  imageCropped(event: ImageCroppedEvent) {
+    console.log('Evento imageCropped recibido:', event);
+
+    if (event.base64) {
+      this.croppedImage = event.base64;
+    } else if (event.blob) {
+      this.convertBlobToBase64(event.blob).then((base64) => {
+        this.croppedImage = base64;
+      });
+    } else {
+      console.error(
+        'Error: El evento imageCropped no devolvió base64 ni blob.',
+      );
+    }
+  }
+
+  // Función para convertir Blob a Base64
+  convertBlobToBase64(blob: Blob): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string); // Devuelve la imagen en formato base64
+      };
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(blob); // Convierte el blob a base64
+    });
+  }
+
+  cropImage() {
+    if (this.croppedImage) {
+      this.foto = this.croppedImage as string;
+      console.log('Imagen recortada asignada correctamente:', this.foto);
+      this.mostrarCropper = false;
+    } else {
+      console.error('Error: No hay imagen recortada para asignar.');
+    }
+  }
+
+  onCropperReady() {
+    console.log('Cropper listo para usar.');
+  }
+
+  onLoadImageFailed(event: any) {
+    console.error('Error al cargar la imagen en el cropper:', event);
+  }
+
+  dataURItoBlob(dataURI: string): Blob {
+    const byteString = atob(dataURI.split(',')[1]);
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: 'image/png' });
   }
 }

@@ -39,7 +39,7 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     public carritoService: CarritoService,
     private getPedido: GetPedidosService,
-  ) {}
+  ) { }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -58,9 +58,9 @@ export class NavbarComponent implements OnInit {
           const usuarioGet = await this.crudUsuarios.getUserById(idToken.id);
           this.usuario.nombre = `${usuarioGet.nombre}`;
           if (usuarioGet.foto == true) {
-            this.usuario.foto = `https://localhost/backend/Resources/img/usuarios/${usuarioGet.id}.jpg`;
+            this.usuario.foto = `https://localhost/backend/Resources/${usuarioGet.email}.jpg`;
           } else {
-            this.usuario.foto = 'assets/default-user.png';
+            this.usuario.foto = 'assets/user.png';
           }
 
           const pedidosUsuario = await this.getPedido.getPedidoById(idToken.id);
