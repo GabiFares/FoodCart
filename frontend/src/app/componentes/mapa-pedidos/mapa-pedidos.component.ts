@@ -154,7 +154,7 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
           new Style({
             image: new Icon({
               src: 'https://cdn-icons-png.freepik.com/256/5457/5457799.png',
-              scale: 0.05,
+              scale: 0.1,
             }),
           })
         );
@@ -189,7 +189,7 @@ export class MapaPedidosComponent implements OnInit, OnDestroy {
             new Style({
               image: new Icon({
                 src: 'https://cdn-icons-png.freepik.com/256/5457/5457799.png',
-                scale: 0.05,
+                scale: 0.1,
               }),
             })
           );

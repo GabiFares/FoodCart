@@ -63,7 +63,7 @@ export class CarritoPage implements OnInit {
   // Método para cargar los productos del carrito
   async cargarProductosDelCarrito() {
     try {
-      const pedidoUsuario = await this.pedidoUsuario.getPedidoById(
+      const pedidoUsuario = await this.pedidoUsuario.getPedidoByIdUsuario(
         this.userId.toString(),
       );
 

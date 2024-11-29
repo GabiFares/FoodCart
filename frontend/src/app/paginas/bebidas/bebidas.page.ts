@@ -39,7 +39,7 @@ export class BebidasPage implements OnInit {
     private router: Router,
     private deleteProduct: DeleteProductoService,
     private getPedidoService: GetPedidosService,
-  ) {}
+  ) { }
 
   // Método que se ejecuta al inicializar el componente
   ngOnInit(): void {
@@ -67,7 +67,7 @@ export class BebidasPage implements OnInit {
     this.productoSeleccionado = producto;
     console.log('este producto en comida page' + JSON.stringify(producto));
     try {
-      const pedidosUsuario = await this.getPedidoService.getPedidoById(
+      const pedidosUsuario = await this.getPedidoService.getPedidoByIdUsuario(
         this.authService.getUserId(),
       );
 
