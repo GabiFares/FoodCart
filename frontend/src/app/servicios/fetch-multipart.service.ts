@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class FetchMultipartService {
 
-  readonly baseurl = 'https://192.168.1.11/backend/'; // URL base para todas las solicitudes al backend
+  readonly baseurl = 'https://localhost/backend/'; // URL base para todas las solicitudes al backend
 
   private getHeaders(): HeadersInit {
     if (localStorage.getItem('token')) {
