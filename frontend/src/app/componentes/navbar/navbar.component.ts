@@ -5,6 +5,7 @@ import {
   OnInit,
   Output,
   HostListener,
+  inject,
 } from '@angular/core';
 import { SearchComponent } from '../search/search.component';
 import { AuthService } from '../../servicios/auth.service';
@@ -29,6 +30,7 @@ export class NavbarComponent implements OnInit {
   };
 
   isDropdownOpen = false;
+  isAdmin = false;
 
   @Input() withSearch: boolean = true;
   @Output() searchValueChange = new EventEmitter<string>();
@@ -39,7 +41,7 @@ export class NavbarComponent implements OnInit {
     private router: Router,
     public carritoService: CarritoService,
     private getPedido: GetPedidosService,
-  ) { }
+  ) {}
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -50,6 +52,7 @@ export class NavbarComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.isAdmin = this.authservice.isAdmin();
     if (this.authservice.isValidUser()) {
       try {
         const token = localStorage.getItem('token');
@@ -63,7 +66,9 @@ export class NavbarComponent implements OnInit {
             this.usuario.foto = 'assets/user.png';
           }
 
-          const pedidosUsuario = await this.getPedido.getPedidoByIdUsuario(idToken.id);
+          const pedidosUsuario = await this.getPedido.getPedidoByIdUsuario(
+            idToken.id,
+          );
 
           if (pedidosUsuario.length > 0) {
             const pedidoPendiente = pedidosUsuario.find(

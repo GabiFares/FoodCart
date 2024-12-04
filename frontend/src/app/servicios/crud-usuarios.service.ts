@@ -12,6 +12,16 @@ export class CRUDUsuariosService {
     private fetchMultipartService: FetchMultipartService,
   ) {}
 
+  async getAllUsers() {
+    try {
+      // Realiza una solicitud GET a la API para obtener el usuario por su ID
+      const response = await this.apiService.get(`usuarios/`);
+      return response; // Retorna la respuesta de la API
+    } catch (error) {
+      console.log(error); // Maneja errores en la consola
+    }
+  }
+
   // Método para obtener un usuario por su ID
   async getUserById(id_usuario: string) {
     try {

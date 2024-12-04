@@ -130,6 +130,22 @@
         </li>
         <li class="w-full sm:w-auto">
           <a
+            routerLink="/historial"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
+            Historial
+          </a>
+        </li>
+        <li class="w-full sm:w-auto" *ngIf="this.isAdmin == true">
+          <a
+            routerLink="/usuarios"
+            class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
+          >
+            Usuarios
+          </a>
+        </li>
+        <li class="w-full sm:w-auto">
+          <a
             routerLink="/pedidos/ver"
             class="block text-center text-white font-bold text-base hover:text-blue-950 py-2 px-4 sm:px-0"
           >

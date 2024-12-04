@@ -32,6 +32,19 @@ const usuarioRoute: FastifyPluginAsync = async (
           .send({ error: "Las contraseñas no coinciden" });
       }
 
+      try {
+        const checkBLPassword = await query(
+          "SELECT * FROM blacklisted_passwords WHERE contraseña = $1",
+          [postUsuario.contraseña]
+        );
+        const rows = checkBLPassword.rows;
+        if (rows) {
+          return reply.unauthorized("No puedes usar esta contraseña.");
+        }
+      } catch {
+        reply.status(500).send("error mal ahi");
+      }
+
       // Guarda la foto de usuario si existe
       if (postUsuario.foto && Object.keys(postUsuario.foto).length > 0) {
         try {
@@ -59,7 +72,9 @@ const usuarioRoute: FastifyPluginAsync = async (
         // Inserta la nueva dirección y teléfono, y crea el usuario
         const baseQuery = `
         WITH direccionid AS (
-          INSERT INTO direccion (numero, calle${postUsuario.apto ? ", apto" : ""}) 
+          INSERT INTO direccion (numero, calle${
+            postUsuario.apto ? ", apto" : ""
+          }) 
           VALUES ($1, $2${postUsuario.apto ? ", $3" : ""}) 
           RETURNING id
         ),
@@ -70,9 +85,15 @@ const usuarioRoute: FastifyPluginAsync = async (
         ),
         usuarioid AS (
           INSERT INTO usuario(nombre, apellido, email, contraseña, id_direccion, id_telefono, foto) 
-          VALUES ($${postUsuario.apto ? "4" : "3"}, $${postUsuario.apto ? "5" : "4"}, 
-                  $${postUsuario.apto ? "6" : "5"}, crypt($${postUsuario.apto ? "7" : "6"}, gen_salt('bf')), 
-                  (SELECT id FROM direccionid), (SELECT id FROM telefonoid), $${postUsuario.apto ? "8" : "7"})
+          VALUES ($${postUsuario.apto ? "4" : "3"}, $${
+          postUsuario.apto ? "5" : "4"
+        }, 
+                  $${postUsuario.apto ? "6" : "5"}, crypt($${
+          postUsuario.apto ? "7" : "6"
+        }, gen_salt('bf')), 
+                  (SELECT id FROM direccionid), (SELECT id FROM telefonoid), $${
+                    postUsuario.apto ? "8" : "7"
+                  })
           RETURNING id
         ),
         usuario_direccion AS (
@@ -84,26 +105,26 @@ const usuarioRoute: FastifyPluginAsync = async (
 
         const params = postUsuario.apto
           ? [
-            postUsuario.numero,
-            postUsuario.calle,
-            postUsuario.apto,
-            postUsuario.nombre,
-            postUsuario.apellido,
-            postUsuario.email,
-            postUsuario.contraseña,
-            tieneFoto,
-            postUsuario.telefono,
-          ]
+              postUsuario.numero,
+              postUsuario.calle,
+              postUsuario.apto,
+              postUsuario.nombre,
+              postUsuario.apellido,
+              postUsuario.email,
+              postUsuario.contraseña,
+              tieneFoto,
+              postUsuario.telefono,
+            ]
           : [
-            postUsuario.numero,
-            postUsuario.calle,
-            postUsuario.nombre,
-            postUsuario.apellido,
-            postUsuario.email,
-            postUsuario.contraseña,
-            tieneFoto,
-            postUsuario.telefono,
-          ];
+              postUsuario.numero,
+              postUsuario.calle,
+              postUsuario.nombre,
+              postUsuario.apellido,
+              postUsuario.email,
+              postUsuario.contraseña,
+              tieneFoto,
+              postUsuario.telefono,
+            ];
 
         await client.query(baseQuery, params);
         await client.query("COMMIT");

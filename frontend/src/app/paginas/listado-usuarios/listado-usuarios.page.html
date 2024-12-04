@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+<div class="flex justify-center">
+  <div
+    class="grid grid-cols-1 gap-4 pb-40 w-full max-w-4xl overflow-y-auto max-h-screen [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+  >
+    <div
+      class="bg-white p-6 rounded-lg shadow-lg flex items-center justify-between mb-8"
+      *ngFor="let usuario of listadeusuarios"
+    >
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900">
+          {{usuario.nombre}} {{usuario.apellido}}
+        </h2>
+        <div class="flex items-end justify-between w-full">
+          <div class="flex gap-4">
+            <button
+              (click)="redirectToverPedidos(usuario.id)"
+              class="bg-green-500 text-white px-3 py-2 rounded-md hover:bg-blue-800 transition-all flex items-center justify-center"
+            >
+              Ver pedidos
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
